@@ -1,0 +1,49 @@
+/* Productos.css */
+
+.productos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+    /* Centra el contenido horizontalmente */
+    max-width: 1200px;
+    /* Limita el ancho máximo */
+}
+
+.search-filter {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.search-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    margin-right: 10px;
+}
+
+.category-select {
+    max-width: 200px;
+    padding: 12px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    background-color: #fff;
+    /* Agrega un fondo blanco para mayor contraste */
+    cursor: pointer;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Resto de tus estilos */

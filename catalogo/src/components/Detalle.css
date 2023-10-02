@@ -1,0 +1,57 @@
+/* DetalleProducto.css */
+
+.detalle-container {
+    display: flex;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.detalle-image {
+    flex: 1;
+}
+
+.detalle-image img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.detalle-info {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+}
+
+.detalle-info h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.detalle-description {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.detalle-more-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+/* Estilo de enlace para efecto de hover */
+.detalle-more-info a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.detalle-more-info a:hover {
+    color: #0056b3;
+}
+
+/* Agrega más estilos según sea necesario */
