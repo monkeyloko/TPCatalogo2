@@ -24,7 +24,7 @@ const Detalle = () => {
     return (
         <div className="detalle-container">
             <div className="detalle-image">
-                <img src={product.images[0]} alt={product.title} />
+                <img src={product.thumbnail} alt={product.title} />
             </div>
             <div className="detalle-info">
                 <h2>{product.title}</h2>

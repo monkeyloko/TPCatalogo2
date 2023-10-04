@@ -58,7 +58,7 @@
                     id={product.id}
                     name={product.title}
                     category={product.category}
-                    image={product.images[0]}
+                    image={product.thumbnail}
                 />
             </Link>
         ))
