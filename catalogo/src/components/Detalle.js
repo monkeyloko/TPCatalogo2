@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
 import { useParams } from 'react-router-dom';
-import products from './listaProducts';
+import { getProductosByID } from './service/apiService';
 import './Detalle.css'
 
 const Detalle = () => {
     const { id } = useParams();
-    const product = products.find((product) => product.id === parseInt(id));
+    const [product, setProducto] = useState({});
+    
 
-    if (!product) {
-        return <div>No se encontró el producto.</div>;
-    }
+    useEffect(() => {
+        getProductosByID(id)
+            .then((response) => {
+                console.log('API Response:', response); // Log the API response
+                setProducto(response);
+            })
+            .catch((error) => {
+                console.error('API Error:', error); // Log any API errors
+            });
+    }, [id]);
+
 
     return (
         <div className="detalle-container">
             <div className="detalle-image">
-                <img src={product.image} alt={product.name} />
+                <img src={product.images[0]} alt={product.title} />
             </div>
             <div className="detalle-info">
-                <h2>{product.name}</h2>
+                <h2>{product.title}</h2>
                 <p className="detalle-description">{product.description}</p>
                 <div className="detalle-more-info">
                     <p>Categoría: {product.category}</p>
