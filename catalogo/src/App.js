@@ -6,9 +6,11 @@ import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Productos from './components/Productos';
 import Detalle from './components/Detalle';
+import { ContextProvider } from "./contextState.js";
 
 function App() {
   return (
+  <ContextProvider>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -18,6 +20,7 @@ function App() {
         </Route>
       </Routes>
     </BrowserRouter>
+  </ContextProvider>
   );
 }
 

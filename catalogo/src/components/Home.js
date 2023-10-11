@@ -6,7 +6,7 @@
     import './Home.css';
     import Product from './Product'; // Importa el componente Product
     import products from './listaProducts'; // Importa la lista de productos
-    import { getProductos } from './service/apiService';
+    import { getProductos } from '../service/apiService';
 
     const Home = () => {
         const [productos, setProductos] = useState([]);

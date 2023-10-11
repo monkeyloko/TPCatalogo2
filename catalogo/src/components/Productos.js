@@ -1,16 +1,36 @@
-import React, { useState } from 'react';
-import './Productos.css'; // Asegúrate de que la ruta al archivo CSS sea correcta
+import React, { useState, useEffect } from 'react';
+import './Productos.css'; // Make sure the CSS file path is correct
 import Product from './Product';
-import products from './listaProducts';
 import { Link } from 'react-router-dom';
+import { getProductos } from '../service/apiService'; // Import the getProductos function
+import { ActionTypes, useContextState } from "../contextState";
 
 const Productos = () => {
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
+    const [products, setProducts] = useState([]); // State to store the fetched products
+    const { contextState, setContextState } = useContextState();
 
-    const filteredProducts = products.filter((product) => {
+    useEffect(() => {
+        setContextState({ newValue: true, type: ActionTypes.setLoading });
+        getProductos()
+            .then((response) => {
+                setContextState({ newValue: false, type: ActionTypes.setLoading });
+                setContextState({ newValue: response, type: ActionTypes.setProducts });
+                console.log('API Response:', contextState.allProducts);
+            })
+            .catch((error) => {
+                console.error('API Error:', error);
+            });
+    }, []);
+    
+
+   
+    const uniqueCategories = [...new Set(contextState?.allProducts?.map((product) => product.category))];
+
+    const filteredProducts = contextState?.allProducts?.filter((product) => {
         return (
-            product.name.toLowerCase().includes(search.toLowerCase()) &&
+            product.title.toLowerCase().includes(search.toLowerCase()) &&
             (categoryFilter === '' || product.category === categoryFilter)
         );
     });
@@ -31,8 +51,11 @@ const Productos = () => {
                     className="category-select"
                 >
                     <option value="">Filtrar por categoría</option>
-                    <option value="Categoría 1">Categoría 1</option>
-                    <option value="Categoría 2">Categoría 2</option>
+                    {uniqueCategories.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -41,9 +64,9 @@ const Productos = () => {
                     <Link to={`/detalle/${product.id}`} key={product.id}>
                         <Product
                             id={product.id}
-                            name={product.name}
+                            name={product.title}
                             category={product.category}
-                            image={product.image}
+                            image={product.thumbnail}
                         />
                     </Link>
                 ))}
