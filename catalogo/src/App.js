@@ -6,21 +6,21 @@ import Layout from './components/Layout';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Productos from './components/Productos';
 import Detalle from './components/Detalle';
-import { ContextProvider } from "./contextState.js";
+import { ProductsProvider } from "./contextState.js";
 
 function App() {
   return (
-  <ContextProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="/productos" element={<Productos />} />
-          <Route path="/detalle/:id" element={<Detalle />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </ContextProvider>
+    <ProductsProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="/productos" element={<Productos />} />
+            <Route path="/detalle/:id" element={<Detalle />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ProductsProvider>
   );
 }
 

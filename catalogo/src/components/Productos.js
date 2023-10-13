@@ -1,39 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import './Productos.css'; // Make sure the CSS file path is correct
+import './Productos.css';
 import Product from './Product';
 import { Link } from 'react-router-dom';
-import { getProductos } from '../service/apiService'; // Import the getProductos function
-import { ActionTypes, useContextState } from "../contextState";
+import { useProductApi } from '../contextState';
 
 const Productos = () => {
+    const { products, categories } = useProductApi();
     const [search, setSearch] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
-    const [products, setProducts] = useState([]); // State to store the fetched products
-    const { contextState, setContextState } = useContextState();
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
     useEffect(() => {
-        setContextState({ newValue: true, type: ActionTypes.setLoading });
-        getProductos()
-            .then((response) => {
-                setContextState({ newValue: false, type: ActionTypes.setLoading });
-                setContextState({ newValue: response, type: ActionTypes.setProducts });
-                console.log('API Response:', contextState.allProducts);
-            })
-            .catch((error) => {
-                console.error('API Error:', error);
-            });
-    }, []);
-    
+        if (categoryFilter) {
+            fetchProductsByCategory(categoryFilter);
+        } else {
+            setFilteredProducts(products);
+        }
+    }, [categoryFilter, products]);
 
-   
-    const uniqueCategories = [...new Set(contextState?.allProducts?.map((product) => product.category))];
-
-    const filteredProducts = contextState?.allProducts?.filter((product) => {
-        return (
-            product.title.toLowerCase().includes(search.toLowerCase()) &&
-            (categoryFilter === '' || product.category === categoryFilter)
-        );
-    });
+    const fetchProductsByCategory = async (category) => {
+        try {
+            const response = await fetch(`https://dummyjson.com/products/category/${category}`);
+            if (response.ok) {
+                const data = await response.json();
+                setFilteredProducts(data.products);
+            } else {
+                console.error('Error fetching products by category');
+                setFilteredProducts([]);
+            }
+        } catch (error) {
+            console.error('Error fetching products by category:', error);
+            setFilteredProducts([]);
+        }
+    };
 
     return (
         <div className="productos-container">
@@ -51,7 +50,7 @@ const Productos = () => {
                     className="category-select"
                 >
                     <option value="">Filtrar por categoría</option>
-                    {uniqueCategories.map((category) => (
+                    {categories.map((category) => (
                         <option key={category} value={category}>
                             {category}
                         </option>
@@ -60,16 +59,18 @@ const Productos = () => {
             </div>
 
             <div className="product-grid">
-                {filteredProducts.map((product) => (
-                    <Link to={`/detalle/${product.id}`} key={product.id}>
-                        <Product
-                            id={product.id}
-                            name={product.title}
-                            category={product.category}
-                            image={product.thumbnail}
-                        />
-                    </Link>
-                ))}
+                {filteredProducts
+                    .filter((product) => product.title.toLowerCase().includes(search.toLowerCase()))
+                    .map((product) => (
+                        <Link to={`/detalle/${product.id}`} key={product.id}>
+                            <Product
+                                id={product.id}
+                                name={product.title}
+                                category={product.category}
+                                image={product.thumbnail}
+                            />
+                        </Link>
+                    ))}
             </div>
         </div>
     );
